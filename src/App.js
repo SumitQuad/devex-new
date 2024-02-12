@@ -25,7 +25,7 @@ const App = () => {
                     </div>
                 </div>
                 <div className="col-md-3">
-                   <SavedData/>
+                 
                 </div>
             </div>
         </div>

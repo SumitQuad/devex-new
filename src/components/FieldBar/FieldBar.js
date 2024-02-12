@@ -1,75 +1,88 @@
 import React, { useState } from 'react';
+import './FieldBar.css'; // Import CSS file for styling
 
-const FieldBar = ({ field }) => {
-    const [inputValue, setInputValue] = useState('');
-    const [storedData, setStoredData] = useState('');
+const FieldBar = () => {
+    const [inputValues, setInputValues] = useState({
+        text: '',
+        number: '',
+        date: ''
+    });
+    const [savedData, setSavedData] = useState([]);
 
-    const handleChange = (event) => {
-        setInputValue(event.target.value);
+    const handleChange = (event, type) => {
+        setInputValues({ ...inputValues, [type]: event.target.value });
     };
 
     const handleSave = () => {
-        localStorage.setItem(field.type, inputValue); // Store data in local storage
-        console.log('Field saved:', inputValue);
+        const newData = Object.values(inputValues);
+        setSavedData([...savedData, newData]);
+        localStorage.setItem('savedData', JSON.stringify([...savedData, newData]));
+        setInputValues({ text: '', number: '', date: '' });
+        console.log('Data saved:', newData);
     };
 
-    const handleView = () => {
-        const storedValue = localStorage.getItem(field.type); // Retrieve data from local storage
-        setStoredData(storedValue);
+    const handleReset = () => {
+        setInputValues({ text: '', number: '', date: '' });
+        setSavedData([]);
+        localStorage.removeItem('savedData');
+        console.log('Data reset');
     };
 
-    const renderInput = () => {
-        switch (field.type) {
-            case 'text':
-            case 'number':
-            case 'date':
-                return (
-                    <div style={styles.container}>
-                        <input
-                            type={field.type}
-                            placeholder={field.label}
-                            value={inputValue}
-                            onChange={handleChange}
-                            style={styles.input}
-                        />
-                        <button onClick={handleSave} style={styles.button}>Save</button>
-                        <button onClick={handleView} style={styles.button}>View</button>
-                    </div>
-                );
-            default:
-                return null;
-        }
+    const renderInputs = () => {
+        return (
+            <div>
+                <input
+                    type="text"
+                    value={inputValues.text}
+                    placeholder="Enter text"
+                    onChange={(e) => handleChange(e, 'text')}
+                    className="input-field"
+                />
+                <input
+                    type="number"
+                    value={inputValues.number}
+                    placeholder="Enter number"
+                    onChange={(e) => handleChange(e, 'number')}
+                    className="input-field"
+                />
+                <input
+                    type="date"
+                    value={inputValues.date}
+                    onChange={(e) => handleChange(e, 'date')}
+                    className="input-field"
+                />
+            </div>
+        );
     };
 
     return (
-        <form>
-            {renderInput()}
-            <div>{storedData}</div>
-        </form>
+        <div>
+            {renderInputs()}
+            <button onClick={handleSave} className="save-button">Save</button>
+            <button onClick={handleReset} className="reset-button">Reset</button>
+            {savedData.length > 0 && (
+                <table className="stored-data">
+                    <thead>
+                        <tr>
+                            <th>Text</th>
+                            <th>Number</th>
+                            <th>Date</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {savedData.map((data, index) => (
+                            <tr key={index}>
+                                <td>{data[0]}</td>
+                                <td>{data[1]}</td>
+                                <td>{data[2]}</td>
+                            </tr>
+                        ))}
+                    </tbody>
+                </table>
+            )}
+            <br/>
+        </div>
     );
-};
-
-const styles = {
-    container: {
-        display: 'flex',
-        alignItems: 'center',
-        marginBottom: '10px'
-    },
-    input: {
-        marginRight: '10px',
-        padding: '5px',
-        borderRadius: '5px',
-        border: '1px solid #ccc'
-    },
-    button: {
-        padding: '5px 10px',
-        borderRadius: '5px',
-        backgroundColor: '#007bff',
-        color: '#fff',
-        border: 'none',
-        cursor: 'pointer',
-        marginLeft: '5px'
-    }
 };
 
 export default FieldBar;

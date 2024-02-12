@@ -1,0 +1,61 @@
+/* FieldBar.css */
+
+.container {
+    margin: 20px;
+}
+
+.input-field {
+    padding: 8px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+}
+
+.save-button,
+.reset-button {
+    padding: 8px 16px;
+    margin-right: 10px;
+    border: none;
+    border-radius: 5px;
+    background-color: #007bff;
+    color: #fff;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.stored-data {
+    margin-top: 20px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+    background-color: #f0f0f0;
+}
+
+/* FieldBar.css */
+
+.stored-data {
+    border-collapse: collapse;
+    width: 100%;
+}
+
+.stored-data th, .stored-data td {
+    border: 1px solid #dddddd;
+    padding: 8px;
+    text-align: left;
+}
+
+.stored-data th {
+    background-color: #f2f2f2;
+    font-weight: bold;
+}
+
+.stored-data tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+
+.stored-data tr:hover {
+    background-color: #ddd;
+}
+
